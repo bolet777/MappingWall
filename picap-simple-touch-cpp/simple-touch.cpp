@@ -204,6 +204,60 @@ int main(void) {
 	    system("sudo cp -rf /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/preset3.xml /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/ofxpimapper.xml");
 	    system("/home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive -f & > /dev/null");
 	  }
+	  else if (i == 3) {
+	    system("clear");
+	    system("sudo killall -9 /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive > /dev/null 2>&1");
+	    system("sudo cp -rf /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/preset4.xml /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/ofxpimapper.xml");
+	    system("/home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive -f & > /dev/null");
+	  }
+	  else if (i == 4) {
+	    system("clear");
+	    system("sudo killall -9 /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive > /dev/null 2>&1");
+	    system("sudo cp -rf /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/preset5.xml /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/ofxpimapper.xml");
+	    system("/home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive -f & > /dev/null");
+	  }
+	  else if (i == 5) {
+	    system("clear");
+	    system("sudo killall -9 /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive > /dev/null 2>&1");
+	    system("sudo cp -rf /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/preset6.xml /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/ofxpimapper.xml");
+	    system("/home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive -f & > /dev/null");
+	  }
+	  else if (i == 6) {
+	    system("clear");
+	    system("sudo killall -9 /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive > /dev/null 2>&1");
+	    system("sudo cp -rf /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/preset7.xml /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/ofxpimapper.xml");
+	    system("/home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive -f & > /dev/null");
+	  }
+	  else if (i == 7) {
+	    system("clear");
+	    system("sudo killall -9 /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive > /dev/null 2>&1");
+	    system("sudo cp -rf /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/preset8.xml /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/ofxpimapper.xml");
+	    system("/home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive -f & > /dev/null");
+	  }
+	  else if (i == 8) {
+	    system("clear");
+	    system("sudo killall -9 /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive > /dev/null 2>&1");
+	    system("sudo cp -rf /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/preset9.xml /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/ofxpimapper.xml");
+	    system("/home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive -f & > /dev/null");
+	  }
+	  else if (i == 9) {
+	    system("clear");
+	    system("sudo killall -9 /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive > /dev/null 2>&1");
+	    system("sudo cp -rf /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/preset10.xml /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/ofxpimapper.xml");
+	    system("/home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive -f & > /dev/null");
+	  }
+	  else if (i == 10) {
+	    system("clear");
+	    system("sudo killall -9 /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive > /dev/null 2>&1");
+	    system("sudo cp -rf /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/preset11.xml /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/ofxpimapper.xml");
+	    system("/home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive -f & > /dev/null");
+	  }
+	  else if (i == 11) {
+	    system("clear");
+	    system("sudo killall -9 /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive > /dev/null 2>&1");
+	    system("sudo cp -rf /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/preset12.xml /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/ofxpimapper.xml");
+	    system("/home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive -f & > /dev/null");
+	  }
         }
         else if (MPR121.isNewRelease(i)) {
           cout << "electrode " << i << " was just released" << endl;
