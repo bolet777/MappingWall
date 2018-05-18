@@ -173,7 +173,7 @@
         </texCoords>
         <source>
             <source-type>image</source-type>
-            <source-name>image3.jpg</source-name>
+            <source-name>image10.jpg</source-name>
         </source>
         <properties>
             <perspectiveWarping>1</perspectiveWarping>
@@ -308,7 +308,7 @@
         </texCoords>
         <source>
             <source-type>image</source-type>
-            <source-name>nom3.jpg</source-name>
+            <source-name>nom10.jpg</source-name>
         </source>
         <properties>
             <perspectiveWarping>1</perspectiveWarping>

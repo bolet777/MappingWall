@@ -37,12 +37,82 @@
 #include <signal.h>
 #include <iostream>
 #include <stdlib.h>
+#include <wiringPi.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <unistd.h>
 
 #define NUM_ELECTRODES 12
+#define BUTTON_PIN 1
+#define DEBOUNCE_LOCKOUT_MS    10
+#define DOUBLEPRESS_TIMEOUT_US 300000
+#define LONGPRESS_TIMEOUT_US   750000
 
 using namespace std;
 
 bool volatile keepRunning = true;
+bool isCalibrating = false;
+
+// enums and variables for state and timeout action
+enum state_t { IDLE, PRESSED, RELEASED };
+state_t volatile state = IDLE;
+
+enum action_t { NONE, SINGLE_PRESS, LONG_PRESS };
+action_t volatile action = NONE;
+
+bool volatile isrEnabled = true;
+bool volatile buttonFlag = false;
+
+// button methods
+void singlePress() {
+	// single press event handler
+	if (isCalibrating == true) {
+	    system("sudo killall -9 /home/pi/openFrameworks/addons/ofxPiMapper/example_basic/bin/example_basic > /dev/null 2>&1");
+	    system("sudo cp -rf /home/pi/openFrameworks/addons/ofxPiMapper/example_basic/bin/data/ofxpimapper.xml /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/presets.xml");
+	    system("sudo /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/CreatePresets.sh");
+	    system("sudo cp -rf /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/preset1.xml /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/ofxpimapper.xml");
+	    system("/home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive -f & > /dev/null");
+	    isCalibrating = false;
+	}
+	else {
+	    system("sudo killall -9 /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive > /dev/null 2>&1");
+	    system("/home/pi/openFrameworks/addons/ofxPiMapper/example_basic/bin/example_basic -f & > /dev/null");
+	    isCalibrating = true;
+	}
+}
+
+void doublePress() {
+	// double press event handler
+}
+
+void longPress() {
+	// long press event handler
+}
+
+void alarmHandler(int dummy) {
+	// time-based part of state machine
+	switch (action) {
+	case NONE:
+		break;
+	case SINGLE_PRESS:
+		singlePress(); // call the single press event handler
+		action = NONE;
+		state = IDLE;
+		break;
+	case LONG_PRESS:
+		longPress(); // call the long press event handler
+		action = NONE;
+		state = IDLE;
+		break;
+	default:
+		break;
+	}
+}
+
+void buttonIsr(void) {
+	// event based part of state machine
+	if (isrEnabled) buttonFlag = true; // set the ISR flag, but only if our soft-gate is enabled
+}
 
 // this allows us to exit the program via Ctrl+C while still exiting elegantly
 void intHandler(int dummy) {
@@ -85,6 +155,8 @@ int main(void) {
     exit(1);
   }
 
+
+
   // this is the touch threshold - setting it low makes it more like a proximity trigger
   // default value is 40 for touch
   int touchThreshold = 40;
@@ -95,6 +167,16 @@ int main(void) {
 
   MPR121.setTouchThreshold(touchThreshold);
   MPR121.setReleaseThreshold(releaseThreshold); 
+
+  // register our interrupt handler for the ualarm signal
+  signal(SIGALRM, alarmHandler);
+
+  wiringPiSetup();
+
+  // button pin is input, pulled up, linked to a dual-edge interrupt
+  pinMode(BUTTON_PIN, INPUT);
+  pullUpDnControl(BUTTON_PIN, PUD_UP);
+  wiringPiISR(BUTTON_PIN, INT_EDGE_BOTH, buttonIsr);
 
   while (keepRunning) {
     if (MPR121.touchStatusChanged()) {
@@ -107,19 +189,19 @@ int main(void) {
 	  if (i == 0) {
 	    system("clear");
 	    system("sudo killall -9 /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive > /dev/null 2>&1");
-	    system("sudo cp -rf /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/annie_gabriel.xml /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/ofxpimapper.xml");
+	    system("sudo cp -rf /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/preset1.xml /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/ofxpimapper.xml");
 	    system("/home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive -f & > /dev/null");
 	  }
 	  else if (i == 1) {
 	    system("clear");
 	    system("sudo killall -9 /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive > /dev/null 2>&1");
-	    system("sudo cp -rf /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/jeff_goodboi.xml /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/ofxpimapper.xml");
+	    system("sudo cp -rf /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/preset2.xml /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/ofxpimapper.xml");
 	    system("/home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive -f & > /dev/null");
 	  }
 	  else if (i == 2) {
 	    system("clear");
 	    system("sudo killall -9 /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive > /dev/null 2>&1");
-	    system("sudo cp -rf /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/karine_cournoyer.xml /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/ofxpimapper.xml");
+	    system("sudo cp -rf /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/preset3.xml /home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/data/ofxpimapper.xml");
 	    system("/home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductive/bin/example_bareconductive -f & > /dev/null");
 	  }
         }
@@ -132,6 +214,55 @@ int main(void) {
     // a little delay so that we don't just sit chewing CPU cycles
     // could implement this with proper interrupts for greater efficiency
     delay(10);
+
+	if (buttonFlag) {
+		if (!digitalRead(BUTTON_PIN)) {
+			// button just pressed
+			switch (state) {
+			case IDLE:
+				// disable the button ISR, set state to pressed and set long press timeout
+				isrEnabled = false;
+				state = PRESSED;
+				action = LONG_PRESS; // what we'll do if we time out in this state...
+				ualarm(LONGPRESS_TIMEOUT_US, 0);
+				// delay a bit to avoid erroneous double-presses from switch bounce
+				delay(DEBOUNCE_LOCKOUT_MS);
+				// re-enable the ISR once we're clear of switch bounce
+				isrEnabled = true;
+				break;
+			case RELEASED:
+				// if we get another press when the switch has been released (and before
+				// the double-press timeout has occured) we have a double-press
+				// so reset the state machine
+				action = NONE;
+				state = IDLE;
+				doublePress(); // call the double press event handler
+				break;
+			default:
+				break;
+			}
+		}
+		else {
+			// button just released
+			switch (state) {
+			case PRESSED:
+				// disable the button ISR, set state to released and set double press timeout
+				isrEnabled = false;
+				action = SINGLE_PRESS; // what we'll do if we timeout in this state
+				ualarm(DOUBLEPRESS_TIMEOUT_US, 0);
+				// delay a bit to avoid erroneous double-presses from switch bounce
+				delay(DEBOUNCE_LOCKOUT_MS);
+				state = RELEASED;
+				// re-enable the ISR once we're clear of switch bounce
+				isrEnabled = true;
+				break;
+			default:
+				break;
+			}
+		}
+
+		buttonFlag = false;
+      }
   }
 
   // make sure we return gracefully

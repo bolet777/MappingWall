@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 
-button = 16
+button = 12
 
 
 def setup():
