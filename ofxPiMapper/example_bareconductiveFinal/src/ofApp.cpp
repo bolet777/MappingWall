@@ -72,7 +72,6 @@ void ofApp::keyPressed(int key) {
 			mapper.keyPressed(key);
 			break;
 	}
-	usleep(10);
 }
 
 void ofApp::keyReleased(int key){
