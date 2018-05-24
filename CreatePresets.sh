@@ -3,8 +3,8 @@
 INPUT_FILE="ofxpimapper.xml"
 OUTPUT_FILE="ofxpimapper"
 
-TOKEN1="__IMAGE__.jpg"
-TOKEN2="__NAME___.jpg"
+TOKEN1="__PICTURE__.jpg"
+TOKEN2="__NAME__.jpg"
 
 length=12
 
