@@ -41,6 +41,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <fstream>
 
 #define NUM_ELECTRODES 12
 #define BUTTON_PIN 1
@@ -155,8 +156,6 @@ int main(void) {
     exit(1);
   }
 
-
-
   // this is the touch threshold - setting it low makes it more like a proximity trigger
   // default value is 40 for touch
   int touchThreshold = 40;
@@ -179,6 +178,7 @@ int main(void) {
   wiringPiISR(BUTTON_PIN, INT_EDGE_BOTH, buttonIsr);
 
   system("/home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductiveFinal/bin/example_bareconductiveFinal -f & > /dev/null");
+  //system("/home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductiveFinal/bin/example_bareconductiveFinal -f");
 
   while (keepRunning) {
     if (MPR121.touchStatusChanged()) {
@@ -187,6 +187,15 @@ int main(void) {
       for (int i=0; i < NUM_ELECTRODES; i++) {
         if (MPR121.isNewTouch(i)) {
           cout << "electrode " << i << " was just touched" << endl;
+	  ofstream out("/home/pi/openFrameworks/addons/ofxPiMapper/example_bareconductiveFinal/bin/command.txt");
+ 	  if (!out) {
+   	    cout << "Couldn't open file." << endl;
+	    exit(1);
+	  }
+	  else {
+	    out << i;
+            out.close();
+	  }
         }
         else if (MPR121.isNewRelease(i)) {
           cout << "electrode " << i << " was just released" << endl;
